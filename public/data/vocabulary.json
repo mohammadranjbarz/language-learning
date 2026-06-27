@@ -1,0 +1,307 @@
+{
+  "meta": {
+    "title": "یادگیری زبان انگلیسی",
+    "description": "درس‌ها و مرور با جعبه لایتنر",
+    "sourceLanguage": "en",
+    "targetLanguage": "fa"
+  },
+  "lessons": [
+    {
+      "id": "lesson-1",
+      "title": "درس ۱ — سلام و احوال‌پرسی",
+      "description": "لغات پایه برای شروع مکالمه",
+      "words": [
+        {
+          "id": "hello",
+          "word": "hello",
+          "translationFa": "سلام",
+          "translationEn": "a greeting used when meeting someone",
+          "sentences": [
+            {
+              "en": "Hello, how are you?",
+              "fa": "سلام، چطوری؟"
+            },
+            {
+              "en": "She said hello to everyone in the room.",
+              "fa": "او به همه در اتاق سلام کرد."
+            },
+            {
+              "en": "Hello! Nice to meet you.",
+              "fa": "سلام! از آشنایی با شما خوشوقتم."
+            }
+          ],
+          "quiz": [
+            {
+              "question": "What does 'hello' mean in Persian?",
+              "questionFa": "معنی کلمه hello به فارسی چیست؟",
+              "options": ["سلام", "خداحافظ", "ممنون", "ببخشید"],
+              "correctIndex": 0
+            },
+            {
+              "question": "Choose the correct sentence:",
+              "questionFa": "جمله درست را انتخاب کنید:",
+              "options": [
+                "Hello, how are you?",
+                "Goodbye, how are you?",
+                "Thanks, how are you?",
+                "Sorry, how are you?"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "question": "'Hello' is used when...",
+              "questionFa": "'Hello' کی استفاده می‌شود؟",
+              "options": [
+                "meeting someone",
+                "leaving a place",
+                "asking for help",
+                "saying sorry"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "question": "Which word is a greeting?",
+              "questionFa": "کدام کلمه یک سلام است؟",
+              "options": ["hello", "goodbye", "please", "because"],
+              "correctIndex": 0
+            }
+          ]
+        },
+        {
+          "id": "goodbye",
+          "word": "goodbye",
+          "translationFa": "خداحافظ",
+          "translationEn": "a word said when leaving or ending a conversation",
+          "sentences": [
+            {
+              "en": "Goodbye! See you tomorrow.",
+              "fa": "خداحافظ! فردا می‌بینمت."
+            },
+            {
+              "en": "He waved goodbye from the window.",
+              "fa": "او از پنجره دست تکان داد و خداحافظی کرد."
+            }
+          ],
+          "quiz": [
+            {
+              "question": "What does 'goodbye' mean?",
+              "questionFa": "معنی goodbye چیست؟",
+              "options": ["خداحافظ", "سلام", "لطفاً", "بله"],
+              "correctIndex": 0
+            },
+            {
+              "question": "When do you say 'goodbye'?",
+              "questionFa": "کی می‌گوییم goodbye؟",
+              "options": [
+                "when leaving",
+                "when meeting",
+                "when eating",
+                "when sleeping"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "question": "Choose the correct sentence:",
+              "questionFa": "جمله درست را انتخاب کنید:",
+              "options": [
+                "Goodbye! See you later.",
+                "Hello! See you later.",
+                "Thanks! See you later.",
+                "Please! See you later."
+              ],
+              "correctIndex": 0
+            },
+            {
+              "question": "Goodbye is the opposite of...",
+              "questionFa": "Goodbye مخالف ... است",
+              "options": ["hello", "please", "water", "book"],
+              "correctIndex": 0
+            }
+          ]
+        },
+        {
+          "id": "thank-you",
+          "word": "thank you",
+          "translationFa": "ممنون / متشکرم",
+          "translationEn": "an expression of gratitude",
+          "sentences": [
+            {
+              "en": "Thank you for your help.",
+              "fa": "از کمکت ممنونم."
+            },
+            {
+              "en": "Thank you very much!",
+              "fa": "خیلی ممنون!"
+            },
+            {
+              "en": "I want to thank you for everything.",
+              "fa": "می‌خواهم ازت برای همه چیز تشکر کنم."
+            }
+          ],
+          "quiz": [
+            {
+              "question": "What does 'thank you' mean?",
+              "questionFa": "معنی thank you چیست؟",
+              "options": ["ممنون", "ببخشید", "سلام", "نه"],
+              "correctIndex": 0
+            },
+            {
+              "question": "You say 'thank you' when someone...",
+              "questionFa": "وقتی کسی ... می‌گوییم thank you",
+              "options": [
+                "helps you",
+                "hurts you",
+                "ignores you",
+                "leaves you"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "question": "Choose the correct sentence:",
+              "questionFa": "جمله درست را انتخاب کنید:",
+              "options": [
+                "Thank you for the gift.",
+                "Sorry for the gift.",
+                "Hello for the gift.",
+                "Goodbye for the gift."
+              ],
+              "correctIndex": 0
+            },
+            {
+              "question": "'Thank you very much' means...",
+              "questionFa": "'Thank you very much' یعنی...",
+              "options": [
+                "خیلی ممنون",
+                "خداحافظ",
+                "ببخشید",
+                "سلام"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "question": "Which is an expression of gratitude?",
+              "questionFa": "کدام عبارت تشکر است؟",
+              "options": ["thank you", "goodbye", "hello", "no"],
+              "correctIndex": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lesson-2",
+      "title": "درس ۲ — اعداد و زمان",
+      "description": "لغات مربوط به اعداد و زمان",
+      "words": [
+        {
+          "id": "today",
+          "word": "today",
+          "translationFa": "امروز",
+          "translationEn": "this present day",
+          "sentences": [
+            {
+              "en": "Today is a beautiful day.",
+              "fa": "امروز روز زیبایی است."
+            },
+            {
+              "en": "What are you doing today?",
+              "fa": "امروز چه کار می‌کنی؟"
+            }
+          ],
+          "quiz": [
+            {
+              "question": "What does 'today' mean?",
+              "questionFa": "معنی today چیست؟",
+              "options": ["امروز", "دیروز", "فردا", "هفته"],
+              "correctIndex": 0
+            },
+            {
+              "question": "'Today' refers to...",
+              "questionFa": "'Today' به ... اشاره دارد",
+              "options": [
+                "this day",
+                "yesterday",
+                "tomorrow",
+                "last year"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "question": "Choose the correct sentence:",
+              "questionFa": "جمله درست را انتخاب کنید:",
+              "options": [
+                "Today is Monday.",
+                "Today was Monday.",
+                "Today will Monday.",
+                "Today are Monday."
+              ],
+              "correctIndex": 0
+            },
+            {
+              "question": "The opposite of 'today' in time is often...",
+              "questionFa": "مخالف زمانی today معمولاً ... است",
+              "options": ["yesterday or tomorrow", "hello", "book", "water"],
+              "correctIndex": 0
+            }
+          ]
+        },
+        {
+          "id": "tomorrow",
+          "word": "tomorrow",
+          "translationFa": "فردا",
+          "translationEn": "the day after today",
+          "sentences": [
+            {
+              "en": "See you tomorrow!",
+              "fa": "فردا می‌بینمت!"
+            },
+            {
+              "en": "Tomorrow we have a test.",
+              "fa": "فردا امتحان داریم."
+            },
+            {
+              "en": "I will start tomorrow morning.",
+              "fa": "فردا صبح شروع می‌کنم."
+            }
+          ],
+          "quiz": [
+            {
+              "question": "What does 'tomorrow' mean?",
+              "questionFa": "معنی tomorrow چیست؟",
+              "options": ["فردا", "امروز", "دیروز", "شب"],
+              "correctIndex": 0
+            },
+            {
+              "question": "Tomorrow comes after...",
+              "questionFa": "Tomorrow بعد از ... می‌آید",
+              "options": ["today", "yesterday", "last week", "never"],
+              "correctIndex": 0
+            },
+            {
+              "question": "Choose the correct sentence:",
+              "questionFa": "جمله درست را انتخاب کنید:",
+              "options": [
+                "See you tomorrow!",
+                "See you yesterday!",
+                "See you today!",
+                "See you never!"
+              ],
+              "correctIndex": 0
+            },
+            {
+              "question": "'Tomorrow we have a test' means...",
+              "questionFa": "'Tomorrow we have a test' یعنی...",
+              "options": [
+                "فردا امتحان داریم",
+                "امروز امتحان داریم",
+                "دیروز امتحان داشتیم",
+                "هرگز امتحان نداریم"
+              ],
+              "correctIndex": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
