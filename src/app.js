@@ -87,13 +87,7 @@ function renderAuthBar() {
   const bar = el('div', { className: 'auth-bar' });
 
   if (!isFirebaseConfigured()) {
-    bar.append(
-      el('p', {
-        className: 'auth-hint',
-        textContent: 'برای همگام‌سازی بین دستگاه‌ها Firebase را تنظیم کنید',
-      })
-    );
-    return bar;
+    return null;
   }
 
   if (currentUser) {

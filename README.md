@@ -76,48 +76,51 @@ GITHUB_PAGES=true npm run build
 
 ## پیشرفت کاربر
 
-- **بدون ورود:** در `localStorage` مرورگر ذخیره می‌شود
-- **با ورود گوگل:** پیشرفت در Firebase Firestore همگام می‌شود و بین دستگاه‌ها قابل دسترسی است
+- **بدون ورود:** در مرورگر ذخیره می‌شود (فقط همان دستگاه)
+- **با ورود گوگل:** پیشرفت در Firebase ذخیره می‌شود و بین موبایل، لپ‌تاپ و… همگام می‌ماند
 
-## راه‌اندازی ورود با گوگل (Firebase)
+> **نکته:** Firebase فقط یک‌بار توسط **سازنده سایت** (تو) ساخته می‌شود. کاربران نهایی هیچ تنظیماتی ندارند — فقط دکمه «ورود با گوگل» را می‌زنند.
+
+## راه‌اندازی Firebase (فقط یک‌بار — برای سازنده)
+
+این مراحل را **فقط خودت** انجام می‌دهی. بعد از deploy، همه کاربران بدون هیچ کار اضافه‌ای می‌توانند لاگین کنند.
 
 ### ۱. پروژه Firebase بساز
 
 1. برو به [console.firebase.google.com](https://console.firebase.google.com)
-2. **Add project** → یک پروژه بساز
-3. **Build** → **Authentication** → **Sign-in method** → **Google** را فعال کن
-4. **Build** → **Firestore Database** → **Create database** (حالت production)
+2. **Add project** → یک پروژه بساز (مثلاً `language-learning`)
+3. **Authentication** → **Sign-in method** → **Google** را فعال کن
+4. **Firestore Database** → **Create database** (production)
 
 ### ۲. اپ وب اضافه کن
 
-1. **Project settings** → **Your apps** → آیکون وب `</>`
-2. نام اپ را بزن → Register
-3. مقادیر config را کپی کن
+1. **Project settings** → **Your apps** → آیکون وب
+2. Register → config را کپی کن
 
-### ۳. فایل `.env` بساز (محلی)
-
-از `.env.example` کپی بگیر:
+### ۳. تست محلی (اختیاری)
 
 ```bash
 cp .env.example .env
+# مقادیر Firebase را در .env بگذار
+npm run dev
 ```
 
-مقادیر Firebase را پر کن و `npm run dev` بزن.
+### ۴. دامنه سایت را مجاز کن
 
-### ۴. دامنه GitHub Pages را مجاز کن
+Firebase → **Authentication** → **Settings** → **Authorized domains**:
 
-در Firebase → **Authentication** → **Settings** → **Authorized domains**:
-
-- `localhost` (پیش‌فرض است)
-- `USERNAME.github.io`
+- `localhost`
+- `USERNAME.github.io` (آدرس GitHub Pages خودت)
 
 ### ۵. قوانین Firestore
 
-فایل `firestore.rules` را در Firebase Console → Firestore → Rules آپلود کن.
+فایل `firestore.rules` را در Firebase Console → Firestore → Rules جایگذاری کن.
 
-### ۶. Secrets برای GitHub Actions
+هر کاربر فقط به داده **خودش** دسترسی دارد (`users/{uid}/...`).
 
-در ریپو → **Settings** → **Secrets and variables** → **Actions** → این secretها را اضافه کن:
+### ۶. Secrets در GitHub (برای deploy خودکار)
+
+ریپو → **Settings** → **Secrets and variables** → **Actions**:
 
 | Secret | مقدار |
 |--------|-------|
@@ -128,10 +131,18 @@ cp .env.example .env
 | `VITE_FIREBASE_MESSAGING_SENDER_ID` | messagingSenderId |
 | `VITE_FIREBASE_APP_ID` | appId |
 
-بعد push کن تا CI با Firebase بیلد شود.
+بعد `git push` — GitHub Actions سایت را با همان Firebase بیلد و منتشر می‌کند.
+
+### تجربه کاربر نهایی
+
+1. سایت را باز می‌کند
+2. «ورود با گوگل» را می‌زند
+3. پیشرفتش ذخیره و بین دستگاه‌ها sync می‌شود
+
+**کاربر نهایی به Firebase Console، API key یا secret دسترسی ندارد و چیزی نصب نمی‌کند.**
 
 ## همگام‌سازی
 
-- با ورود گوگل، پیشرفت محلی و ابری **ادغام** می‌شود (بهترین وضعیت هر لغت حفظ می‌شود)
-- هر تغییر (درس، مرور، آزمون) خودکار به ابر ذخیره می‌شود
-- بدون Firebase هم اپ کار می‌کند؛ فقط همگام‌سازی غیرفعال است
+- با ورود گوگل، پیشرفت محلی و ابری ادغام می‌شود
+- هر تغییر خودکار به ابر ذخیره می‌شود
+- اگر هنوز Firebase تنظیم نشده باشد، اپ بدون لاگین هم کار می‌کند (فقط localStorage)
