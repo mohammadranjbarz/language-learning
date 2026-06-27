@@ -7,6 +7,7 @@ import {
   recordReviewAnswer,
   resetProgress,
   initWordForReview,
+  emptyProgress,
   MAX_BOX,
 } from './storage.js';
 import {
@@ -16,11 +17,29 @@ import {
   getReviewStats,
   formatNextReview,
 } from './leitner.js';
+import { isFirebaseConfigured } from './firebase.js';
+import {
+  initAuth,
+  getUser,
+  onUserChange,
+  signInWithGoogle,
+  logout,
+} from './auth.js';
+import {
+  initSync,
+  syncOnLogin,
+  getSyncStatus,
+  onSyncStatusChange,
+  saveCloudProgress,
+} from './sync.js';
 
 let data = null;
 let progress = loadProgress();
 let currentView = 'home';
 let viewState = {};
+let currentUser = getUser();
+let syncStatus = getSyncStatus();
+let authError = null;
 
 const app = document.getElementById('app');
 
@@ -64,6 +83,85 @@ function el(tag, attrs = {}, children = []) {
   return node;
 }
 
+function renderAuthBar() {
+  const bar = el('div', { className: 'auth-bar' });
+
+  if (!isFirebaseConfigured()) {
+    bar.append(
+      el('p', {
+        className: 'auth-hint',
+        textContent: 'برای همگام‌سازی بین دستگاه‌ها Firebase را تنظیم کنید',
+      })
+    );
+    return bar;
+  }
+
+  if (currentUser) {
+    const userInfo = el('div', { className: 'auth-user' });
+    if (currentUser.photoURL) {
+      userInfo.append(el('img', {
+        className: 'auth-avatar',
+        src: currentUser.photoURL,
+        alt: currentUser.displayName ?? 'کاربر',
+      }));
+    }
+    userInfo.append(
+      el('span', { className: 'auth-name', textContent: currentUser.displayName ?? currentUser.email })
+    );
+    bar.append(userInfo);
+
+    const syncLabel = {
+      idle: '',
+      syncing: 'در حال همگام‌سازی…',
+      synced: 'همگام شد',
+      error: 'خطا در همگام‌سازی',
+    }[syncStatus];
+    if (syncLabel) {
+      bar.append(el('span', { className: `sync-badge sync-${syncStatus}`, textContent: syncLabel }));
+    }
+
+    bar.append(
+      el('button', {
+        className: 'btn btn-secondary btn-sm auth-logout',
+        onClick: async () => {
+          await logout();
+        },
+        textContent: 'خروج',
+      })
+    );
+  } else {
+    bar.append(
+      el('p', { className: 'auth-hint', textContent: 'با گوگل وارد شوید تا پیشرفتتان بین دستگاه‌ها ذخیره شود' })
+    );
+    if (authError) {
+      bar.append(el('p', { className: 'auth-error', textContent: authError }));
+    }
+    bar.append(
+      el('button', {
+        className: 'btn-google',
+        onClick: async () => {
+          authError = null;
+          try {
+            await signInWithGoogle();
+          } catch (err) {
+            authError = err.code === 'auth/popup-closed-by-user'
+              ? 'پنجره ورود بسته شد'
+              : 'خطا در ورود با گوگل';
+            render();
+          }
+        },
+      }, [
+        el('span', { className: 'google-icon', innerHTML: googleIconSvg }),
+        el('span', { textContent: 'ورود با گوگل' }),
+      ])
+    );
+  }
+
+  return bar;
+}
+
+const googleIconSvg = `<svg viewBox="0 0 24 24" width="18" height="18"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>`;
+
 function renderHeader(title, backAction) {
   const header = el('header', { className: 'header' });
   if (backAction) {
@@ -81,6 +179,7 @@ function renderHome() {
   const totalLessons = data.lessons.length;
 
   const container = el('div', { className: 'page home-page' });
+  container.append(renderAuthBar());
   container.append(
     el('div', { className: 'hero' }, [
       el('h1', { className: 'hero-title', textContent: data.meta.title }),
@@ -128,10 +227,13 @@ function renderHome() {
   container.append(
     el('button', {
       className: 'btn-text reset-btn',
-      onClick: () => {
+      onClick: async () => {
         if (confirm('پیشرفت ذخیره‌شده پاک شود؟')) {
           resetProgress();
           progress = loadProgress();
+          if (currentUser) {
+            await saveCloudProgress(currentUser.uid, emptyProgress());
+          }
           render();
         }
       },
@@ -474,6 +576,26 @@ function render() {
 
 async function init() {
   app.innerHTML = '<div class="loading">در حال بارگذاری...</div>';
+
+  if (isFirebaseConfigured()) {
+    initAuth();
+    initSync();
+
+    onUserChange(async (user) => {
+      currentUser = user;
+      authError = null;
+      if (user) {
+        progress = await syncOnLogin(user);
+      }
+      render();
+    });
+
+    onSyncStatusChange((status) => {
+      syncStatus = status;
+      if (currentView === 'home') render();
+    });
+  }
+
   try {
     await loadData();
     render();

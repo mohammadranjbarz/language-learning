@@ -12,22 +12,38 @@ export const BOX_INTERVALS_HOURS = [
 
 export const MAX_BOX = BOX_INTERVALS_HOURS.length;
 
-export function loadProgress() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch {
-    /* ignore */
-  }
+let onProgressChange = null;
+
+export function setProgressChangeHandler(fn) {
+  onProgressChange = fn;
+}
+
+export function emptyProgress() {
   return {
     wordStates: {},
     studiedLessons: [],
     stats: { totalReviews: 0, correctReviews: 0 },
+    updatedAt: 0,
   };
 }
 
+export function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      return { ...emptyProgress(), ...parsed };
+    }
+  } catch {
+    /* ignore */
+  }
+  return emptyProgress();
+}
+
 export function saveProgress(progress) {
+  progress.updatedAt = Date.now();
   localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+  onProgressChange?.(progress);
 }
 
 export function getWordState(progress, wordId) {
